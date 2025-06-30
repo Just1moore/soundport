@@ -201,6 +201,10 @@ app.post('/api/getTitle', async (req, res) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 });
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}`)
+});
+
 
 // 
 
