@@ -202,7 +202,5 @@ app.post('/api/getTitle', async (req, res) => {
   }
 });
 
-// === SERVER START ===
-app.listen(PORT, () => {
-  console.log(`✅ SoundPort backend running at http://localhost:${PORT}`);
+// 
 })
