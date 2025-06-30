@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SoundPort - Results</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0a0e1a 0%, #1a2332 50%, #2d4a6b 100%);
+      color: white;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    header {
+      padding: 20px 0;
+      position: relative;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-left {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .discover-text {
+      font-size: 40px;
+      font-weight: 700;
+      opacity: 0.8;
+    }
+
+    .tagline {
+      font-size: 25px;
+      color: #00d4ff;
+      font-weight: 550;
+    }
+
+    .auth-btn {
+      background: linear-gradient(45deg, #00d4ff, #0099cc);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+    }
+
+    .logo-container {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .logo {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+      box-shadow: 0 20px 40px rgba(0, 212, 255, 0.3);
+      animation: logoFloat 6s ease-in-out infinite;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(5deg); }
+    }
+
+    .brand-name {
+      font-size: 48px;
+      font-weight: 700;
+      background: linear-gradient(45deg, #00d4ff, #0099cc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+    }
+
+    .search-container {
+      max-width: 600px;
+      margin: 0 auto 60px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 20px 60px 20px 24px;
+      font-size: 16px;
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      color: white;
+      outline: none;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .search-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .search-input:focus {
+      border-color: #00d4ff;
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .search-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(45deg, #00d4ff, #0099cc);
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .search-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .loading {
+      display: none;
+      margin: 20px 0;
+      font-size: 18px;
+      color: #00d4ff;
+    }
+
+    .error {
+      display: none;
+      margin: 20px 0;
+      padding: 15px;
+      background: rgba(255, 0, 0, 0.1);
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      border-radius: 10px;
+      color: #ff6b6b;
+    }
+
+    /* Platform Support */
+    .platforms-section {
+      margin-bottom: 80px;
+    }
+    .platforms-title {
+      font-size: 20px;
+      margin-bottom: 30px;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+    .platforms-grid {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .platform-icon {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .platform-icon::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+    .platform-icon:hover {
+      transform: translateY(-5px);
+      border-color: #00d4ff;
+      box-shadow: 0 15px 30px rgba(0, 212, 255, 0.2);
+    }
+    .platform-icon:hover::before {
+      left: 100%;
+    }
+
+    .results-grid {
+      display: none;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .result-card {
+      width: 240px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: 20px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .result-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 212, 255, 0.2);
+      border-color: #00d4ff;
+    }
+
+    .artwork {
+      width: 100%;
+      height: 200px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin-bottom: 15px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .result-card .platform-icon {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto;
+    }
+
+    .result-card .platform-icon svg {
+      width: 100%;
+      height: 100%;
+      fill: white;
+    }
+
+    .track-title {
+      font-size: 16px;
+      margin-top: 8px;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 600;
+    }
+
+    .track-artist {
+      font-size: 14px;
+      margin-top: 4px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .track-info {
+      font-size: 12px;
+      margin-top: 8px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .footer {
+      margin-top: 60px;
+      font-size: 14px;
+      opacity: 0.6;
+    }
+
+    .playlist-info {
+      margin: 20px 0;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      border: 1px solid rgba(0, 212, 255, 0.2);
+    }
+
+    .playlist-links {
+      margin-top: 15px;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .playlist-link {
+      background: linear-gradient(45deg, #00d4ff, #0099cc);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .playlist-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+  <nav>
+    <div class="nav-left">
+      <div class="discover-text" id="headerText">Discover...</div>
+      <div class="tagline">Links to your track & playlist</div>
+    </div>
+    <div>
+      <a href="/auth" class="auth-btn">YouTube Auth</a>
+      <a href="/spotify-auth" class="auth-btn" style="margin-left: 10px;">Spotify Auth</a>
+    </div>
+  </nav>
+</header>
+
+    <!-- Logo and App Name -->
+    <div class="logo-container">
+      <div class="logo">
+        <img src="https://uploads.onecompiler.io/43kq2e9s9/43nnht5xp/Screenshot%202025-06-23%20155848.png" alt="SoundPort Logo" />
+      </div>
+      <h1 class="brand-name">SoundPort</h1>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+      <input type="text" class="search-input" placeholder="Paste Spotify or YouTube link here..." id="searchInput">
+      <button class="search-btn" id="searchBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Platform Support Section -->
+    <div class="platforms-section" id="platformsSection">
+      <h2 class="platforms-title">Platforms we currently support</h2>
+      <div class="platforms-grid">
+        <div class="platform-icon" title="YouTube">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </div>
+        <div class="platform-icon" title="Spotify">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/>
+          </svg>
+        </div>
+        <div class="platform-icon" title="YouTube Music">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="12" r="10"/>
+            <polygon fill="white" points="10,8 16,12 10,16"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading" id="loading">🔄 Converting your link...</div>
+
+    <!-- Error State -->
+    <div class="error" id="error"></div>
+
+    <!-- Playlist Info (for playlist conversions) -->
+    <div class="playlist-info" id="playlistInfo" style="display: none;">
+      <h3 id="playlistTitle">Playlist Converted Successfully!</h3>
+      <p id="playlistCount"></p>
+      <div class="playlist-links" id="playlistLinks"></div>
+    </div>
+
+    <!-- Result Cards -->
+    <div class="results-grid" id="resultsGrid">
+      <!-- YouTube Card -->
+      <a class="result-card" id="youtubeCard" target="_blank" style="display: none;">
+        <img class="artwork" id="youtubeArtwork" alt="Track Cover" />
+        <div class="platform-icon" title="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </div>
+        <div class="track-title" id="youtubeTitle">Track Title</div>
+        <div class="track-artist" id="youtubeChannel">Channel Name</div>
+        <div class="track-info" id="youtubeInfo">YouTube</div>
+        
+      </a>
+
+      <!-- Spotify Card -->
+      <a class="result-card" id="spotifyCard" target="_blank" style="display: none;">
+        <img class="artwork" id="spotifyArtwork" alt="Track Cover" />
+        <div class="platform-icon" title="Spotify">
+          <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        </div>
+        <div class="track-title" id="spotifyTitle">Track Title</div>
+        <div class="track-artist" id="spotifyArtist">Artist Name</div>
+        <div class="track-info" id="spotifyInfo">Album • Duration</div>
+      </a>
+
+      <!-- YouTube Music Card -->
+      <a class="result-card" id="ytMusicCard" target="_blank" style="display: none;">
+        <img class="artwork" id="ytMusicArtwork" alt="Track Cover" />
+        <div class="platform-icon" title="YouTube Music">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon fill="white" points="10,8 16,12 10,16"/></svg>
+        </div>
+        <div class="track-title" id="ytMusicTitle">Track Title</div>
+        <div class="track-artist" id="ytMusicChannel">Channel Name</div>
+        <div class="track-info">YouTube Music</div>
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">© 2025 SoundPort. All rights reserved.</div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const loading = document.getElementById('loading');
+    const error = document.getElementById('error');
+    const resultsGrid = document.getElementById('resultsGrid');
+    const headerText = document.getElementById('headerText');
+    const playlistInfo = document.getElementById('playlistInfo');
+    const platformsSection = document.getElementById('platformsSection');
+
+    // Card elements
+    const youtubeCard = document.getElementById('youtubeCard');
+    const spotifyCard = document.getElementById('spotifyCard');
+    const ytMusicCard = document.getElementById('ytMusicCard');
+
+    async function searchTrack() {
+      const link = searchInput.value.trim();
+      if (!link) {
+        showError('Please enter a Spotify or YouTube link');
+        return;
+      }
+
+      // Show loading state
+      showLoading();
+      hideError();
+      hideResults();
+      hidePlaylistInfo();
+      hidePlatformsSection();
+      headerText.textContent = 'Converting...';
+
+      try {
+        const response = await fetch('/api/getTitle', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ link })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to process link');
+        }
+
+        hideLoading();
+
+        // Check if it's a playlist response
+        if (data.tracks && Array.isArray(data.tracks)) {
+          showPlaylistResults(data);
+        } else {
+          showTrackResults(data);
+        }
+
+      } catch (err) {
+        hideLoading();
+        showError(err.message || 'Failed to process link. Please check the URL and try again.');
+        headerText.textContent = 'Error...';
+        showPlatformsSection();
+      }
+    }
+
+    function showTrackResults(data) {
+      headerText.textContent = 'Results...';
+      
+      // Hide all cards first
+      youtubeCard.style.display = 'none';
+      spotifyCard.style.display = 'none';
+      ytMusicCard.style.display = 'none';
+
+      // Show YouTube card if available
+      if (data.youtube && (data.youtube.found !== false)) {
+        populateYouTubeCard(data.youtube);
+        youtubeCard.style.display = 'block';
+      }
+
+      // Show Spotify card if available
+      if (data.spotify && data.spotify.found) {
+        populateSpotifyCard(data.spotify);
+        spotifyCard.style.display = 'block';
+      }
+
+      // Show YouTube Music card if available
+      if (data.youtubeMusicUrl) {
+        populateYTMusicCard(data);
+        ytMusicCard.style.display = 'block';
+      }
+
+      resultsGrid.style.display = 'flex';
+    }
+
+    function showPlaylistResults(data) {
+      headerText.textContent = 'Playlist Converted!';
+      
+      document.getElementById('playlistTitle').textContent = 'Playlist Converted Successfully!';
+      document.getElementById('playlistCount').textContent = `${data.count} tracks converted`;
+      
+      const linksContainer = document.getElementById('playlistLinks');
+      linksContainer.innerHTML = '';
+      
+      if (data.youtubePlaylistUrl) {
+        const ytLink = document.createElement('a');
+        ytLink.href = data.youtubePlaylistUrl;
+        ytLink.className = 'playlist-link';
+        ytLink.textContent = 'Open in YouTube';
+        ytLink.target = '_blank';
+        linksContainer.appendChild(ytLink);
+      }
+      
+      if (data.youtubeMusicPlaylistUrl) {
+        const ytmLink = document.createElement('a');
+        ytmLink.href = data.youtubeMusicPlaylistUrl;
+        ytmLink.className = 'playlist-link';
+        ytmLink.textContent = 'Open in YouTube Music';
+        ytmLink.target = '_blank';
+        linksContainer.appendChild(ytmLink);
+      }
+
+      playlistInfo.style.display = 'block';
+    }
+
+    function populateYouTubeCard(youtube) {
+      const artwork = document.getElementById('youtubeArtwork');
+      const title = document.getElementById('youtubeTitle');
+      const channel = document.getElementById('youtubeChannel');
+      const info = document.getElementById('youtubeInfo');
+
+      artwork.src = youtube.thumbnail || 'https://uploads.onecompiler.io/43kq2e9s9/43nnht5xp/Screenshot%202025-06-23%20180511.png';
+      title.textContent = youtube.title || 'Unknown Title';
+      channel.textContent = youtube.channel || 'Unknown Channel';
+      
+      let infoText = '';
+      if (youtube.publishedAt) infoText += youtube.publishedAt;
+      if (youtube.viewCount) {
+        if (infoText) infoText += ' • ';
+        infoText += formatViewCount(youtube.viewCount) + ' views';
+      }
+      info.textContent = infoText || 'YouTube';
+
+      youtubeCard.href = `https://www.youtube.com/watch?v=${youtube.id}`;
+    }
+
+    function populateSpotifyCard(spotify) {
+      const artwork = document.getElementById('spotifyArtwork');
+      const title = document.getElementById('spotifyTitle');
+      const artist = document.getElementById('spotifyArtist');
+      const info = document.getElementById('spotifyInfo');
+
+      artwork.src = spotify.image || 'https://uploads.onecompiler.io/43kq2e9s9/43nnht5xp/Screenshot%202025-06-23%20180511.png';
+      title.textContent = spotify.name || 'Unknown Title';
+      artist.textContent = spotify.artist || 'Unknown Artist';
+      
+      let infoText = '';
+      if (spotify.album) infoText += spotify.album;
+      if (spotify.duration) {
+        if (infoText) infoText += ' • ';
+        infoText += formatDuration(spotify.duration);
+      }
+      info.textContent = infoText || 'Spotify';
+
+      spotifyCard.href = spotify.spotifyUrl || '#';
+    }
+
+    function populateYTMusicCard(data) {
+      const artwork = document.getElementById('ytMusicArtwork');
+      const title = document.getElementById('ytMusicTitle');
+      const channel = document.getElementById('ytMusicChannel');
+
+      // Use data from either YouTube or Spotify
+      if (data.youtube) {
+        artwork.src = data.youtube.thumbnail || 'https://uploads.onecompiler.io/43kq2e9s9/43nnht5xp/Screenshot%202025-06-23%20180511.png';
+        title.textContent = data.youtube.title || 'Unknown Title';
+        channel.textContent = data.youtube.channel || 'Unknown Channel';
+      } else if (data.spotify && data.spotify.found) {
+        artwork.src = data.spotify.image || 'https://uploads.onecompiler.io/43kq2e9s9/43nnht5xp/Screenshot%202025-06-23%20180511.png';
+        title.textContent = data.spotify.name || 'Unknown Title';
+        channel.textContent = data.spotify.artist || 'Unknown Artist';
+      }
+
+      ytMusicCard.href = data.youtubeMusicUrl || '#';
+    }
+
+    function formatViewCount(count) {
+      const num = parseInt(count);
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toLocaleString();
+    }
+
+    function formatDuration(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function showLoading() {
+      loading.style.display = 'block';
+      searchBtn.disabled = true;
+    }
+
+    function hideLoading() {
+      loading.style.display = 'none';
+      searchBtn.disabled = false;
+    }
+
+    function showError(message) {
+      error.textContent = message;
+      error.style.display = 'block';
+    }
+
+    function hideError() {
+      error.style.display = 'none';
+    }
+
+    function hideResults() {
+      resultsGrid.style.display = 'none';
+    }
+
+    function hidePlaylistInfo() {
+      playlistInfo.style.display = 'none';
+    }
+
+    function hidePlatformsSection() {
+      platformsSection.style.display = 'none';
+    }
+
+    function showPlatformsSection() {
+      platformsSection.style.display = 'block';
+    }
+
+    // Event listeners
+    searchBtn.addEventListener('click', searchTrack);
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchTrack();
+      }
+    });
+
+    // Removed auto-search on paste - user must press Enter or click search button
+  </script>
+</body>
+</html>
