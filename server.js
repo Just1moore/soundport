@@ -12,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
-app.use(express.static);
+
 
 const client_id = process.env.YT_CLIENT_ID;
 const client_secret = process.env.YT_CLIENT_SECRET;
