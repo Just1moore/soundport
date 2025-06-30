@@ -12,6 +12,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
+app.use(express.static);   //  ← this passes `undefined`, so “root path must be a string”
+
 
 
 const client_id = process.env.YT_CLIENT_ID;
