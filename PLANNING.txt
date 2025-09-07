@@ -1,8 +1,0 @@
-1. Fix the naming issue when no hyphen is used. - disccovery
-2. Add playlists to Yt and Spotify.
-3. Add you-tube music to the apps.
-4. Recommend music using mix drop.
-5. Fix the UI to look prettier.
-6. Look for hosting services
-7. Consider developing adding apple music
-8. Consider an app for ios.
