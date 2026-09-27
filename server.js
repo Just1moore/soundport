@@ -1,4 +1,4 @@
-// 📦 SoundPort Backend: Spotify + YouTube Playlist Bridge
+// SoundPort Backend: Spotify + YouTube Playlist Bridge
 const express = require('express');
 const axios = require('axios');
 const dotenv = require('dotenv');
@@ -52,11 +52,11 @@ app.get('/oauth2callback', async (req, res) => {
       }
     });
     refresh_token = response.data.refresh_token;
-    console.log('✅ Refresh token obtained. Save this to .env:', refresh_token);
-    res.send('✅ Auth complete. You can close this tab.');
+    console.log('Refresh token obtained. Save this to .env:', refresh_token);
+    res.send('Auth complete. You can close this tab.');
   } catch (err) {
-    console.error('❌ Auth failed:', err.response?.data || err.message);
-    res.send('❌ Failed to authenticate.');
+    console.error('Auth failed:', err.response?.data || err.message);
+    res.send(' Failed to authenticate.');
   }
 });
 
@@ -199,7 +199,7 @@ app.post('/api/getTitle', async (req, res) => {
 
     return res.status(400).json({ error: 'Unsupported link format' });
   } catch (err) {
-    console.error('❌ Error in getTitle:', err);
+    console.error('Error in getTitle:', err);
     return res.status(500).json({ error: 'Internal server error' });
   }
 });
